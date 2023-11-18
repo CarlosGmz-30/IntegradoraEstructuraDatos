@@ -2,14 +2,14 @@ package mx.edu.utez.Model;
 
 import java.util.Date;
 
-public class tarea {
+public class Tarea {
     private String titulo;
     private String descripcion;
     private String estado;
     private String prioridad;
     private Date fecha;
 
-    public tarea(String titulo, String descripcion, String estado, String prioridad, Date fecha) {
+    public Tarea(String titulo, String descripcion, String estado, String prioridad, Date fecha) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.estado = estado;
