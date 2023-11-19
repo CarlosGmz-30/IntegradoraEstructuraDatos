@@ -30,16 +30,17 @@ public class TareaDao implements DaoRepository {
         Connection connection = new MysqlConector().connect();
         try {
             //PreparedStatement stmt = connection.prepareStatement(" call agregar_tarea('Investigacion','Investigacion sobre JWT','media','pendiente')");
-            PreparedStatement stmt = connection.prepareStatement(" call agregar_tarea(?,?,?,?);");
+            PreparedStatement stmt = connection.prepareStatement(" call agregar_tarea(?,?,?,?,?);");
 
             stmt.setString(1, tarea.getTitulo());
             stmt.setString(2, tarea.getDescripcion());
-            stmt.setString(3, tarea.getPrioridad());
-            stmt.setString(4, tarea.getEstado());
+            stmt.setString(3, tarea.getFecha());
+            stmt.setString(4, tarea.getPrioridad());
+            stmt.setString(5, tarea.getEstado());
             return stmt.executeUpdate() == 1;
 
 
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }

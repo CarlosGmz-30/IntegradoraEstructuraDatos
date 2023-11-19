@@ -3,6 +3,8 @@ package mx.edu.utez;
 import mx.edu.utez.Models.Tarea.Tarea;
 import mx.edu.utez.Models.Tarea.TareaDao;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Scanner;
 
@@ -16,9 +18,16 @@ public class Main {
         do {
             try {
                 opc = menuPrincipal(sc);
-                switch (opc){
+                switch (opc) {
                     case 1:
-                        if (agregarTarea()) System.out.println("\nTarea agregada con exito\n");
+                        Tarea tareaNueva = agregarTarea();
+                        if (tareaNueva != null) {
+                            tareaLinkedList.add(tareaNueva);
+                            System.out.println("\nTarea agregada con exito\n");
+                        } else {
+                            System.out.println("\n**Error al agregar tarea**\n");
+                        }
+                        mostrarTareas(tareaLinkedList);
                         break;
                     case 2:
                         break;
@@ -51,7 +60,7 @@ public class Main {
         return sc.nextInt();
     }
 
-    public static boolean agregarTarea() {
+    public static Tarea agregarTarea() {
         TareaDao tareaDao = new TareaDao();
         Scanner sc = new Scanner(System.in);
         Tarea tarea = new Tarea();
@@ -59,12 +68,38 @@ public class Main {
         tarea.setTitulo(sc.nextLine());
         System.out.println("Descripcion:");
         tarea.setDescripcion(sc.nextLine());
+        System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
+        String fechaString = sc.nextLine();
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            Date fecha = dateFormat.parse(fechaString);
+            tarea.setFecha(fecha);
+        } catch (Exception e) {
+            System.out.println("Error al convertir la fecha");
+        }
+
         System.out.println("Prioridad:");
         tarea.setPrioridad(sc.nextLine().toLowerCase());
         tarea.setEstado("pendiente");
         //sc.close();
-        return tareaDao.create(tarea);
+        if (tareaDao.create(tarea)) {
+            return tarea;
+        } else {
+            return null;
+        }
     }
 
+    public static void mostrarTareas(LinkedList<Tarea> tareasLinkedList) {
+        System.out.println("\n========== TAREAS ACTUALES ==========\n");
+        tareasLinkedList.forEach(tarea -> {
+            System.out.printf("""
+                    ------------------------------
+                    Tarea #1: %s
+                    Fecha entrega: %s
+                    ------------------------------
+                    """, tarea.getTitulo(), tarea.getFecha());
+        });
+    }
 
 }

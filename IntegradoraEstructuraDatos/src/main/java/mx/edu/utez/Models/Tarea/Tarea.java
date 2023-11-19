@@ -9,7 +9,7 @@ public class Tarea {
     private String prioridad;
     private Date fecha;
 
-    public Tarea(){
+    public Tarea() {
 
     }
 
@@ -61,8 +61,11 @@ public class Tarea {
         this.prioridad = prioridad;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public String getFecha() {
+        // Cortar la fecha de esto Sat Nov 18 00:00:00 CST 2023 a Nov 18 2023
+        String fechaString = fecha.toString();
+        String[] fechaArray = fechaString.split(" ");
+        return fechaArray[1] + " " + fechaArray[2] + " " + fechaArray[5];
     }
 
     public void setFecha(Date fecha) {
