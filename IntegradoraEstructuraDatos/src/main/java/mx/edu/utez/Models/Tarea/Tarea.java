@@ -1,4 +1,4 @@
-package mx.edu.utez.Model;
+package mx.edu.utez.Models.Tarea;
 
 import java.util.Date;
 
@@ -9,12 +9,24 @@ public class Tarea {
     private String prioridad;
     private Date fecha;
 
+    public Tarea(){
+
+    }
+
     public Tarea(String titulo, String descripcion, String estado, String prioridad, Date fecha) {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.estado = estado;
         this.prioridad = prioridad;
         this.fecha = fecha;
+    }
+
+    public Tarea(String titulo, String descripcion, String estado, String prioridad) {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.estado = estado;
+        this.prioridad = prioridad;
+
     }
 
     public String getTitulo() {
