@@ -6,6 +6,7 @@ import mx.edu.utez.Models.Tarea.TareaDao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -16,6 +17,7 @@ public class Main {
         int opc = 0;
 
         do {
+            mostrarTareasFindAll();
             try {
                 opc = menuPrincipal(sc);
                 switch (opc) {
@@ -27,7 +29,7 @@ public class Main {
                         } else {
                             System.out.println("\n**Error al agregar tarea**\n");
                         }
-                        mostrarTareas(tareaLinkedList);
+                        //mostrarTareas(tareaLinkedList);
                         break;
                     case 2:
                         break;
@@ -91,15 +93,33 @@ public class Main {
     }
 
     public static void mostrarTareas(LinkedList<Tarea> tareasLinkedList) {
-        System.out.println("\n========== TAREAS ACTUALES ==========\n");
+        System.out.printf("%-16s %-25s %-10s %-12s %-12s", "TITULO", "DESCRIPCION", "PRIORIDAD", "ESTADO", "FECHA");
+        System.out.println();
         tareasLinkedList.forEach(tarea -> {
-            System.out.printf("""
-                    ------------------------------
-                    Tarea #1: %s
-                    Fecha entrega: %s
-                    ------------------------------
-                    """, tarea.getTitulo(), tarea.getFecha());
+            System.out.println("-------------------------------------------------------------------------------");
+            System.out.printf("%-16s %-25s %-10s %-12s %-12s", tarea.getTitulo(), tarea.getDescripcion(), tarea.getPrioridad(), tarea.getEstado(), tarea.getFecha());
+            System.out.println();
+
         });
+        System.out.println("-------------------------------------------------------------------------------");
     }
+
+    public static void mostrarTareasFindAll() {
+        TareaDao tareaDao = new TareaDao();
+        List<Tarea> tareaList = tareaDao.findall();
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.printf("%-16s %-25s %-10s %-12s %-12s", "TITULO", "DESCRIPCION", "PRIORIDAD", "ESTADO", "FECHA");
+        System.out.println();
+        System.out.println("-------------------------------------------------------------------------------");
+        tareaList.forEach(tarea -> {
+            //System.out.println("-------------------------------------------------------------------------------");
+            System.out.printf("%-16s %-25s %-10s %-12s %-12s", tarea.getTitulo(), tarea.getDescripcion(), tarea.getPrioridad(), tarea.getEstado(), tarea.getFechaString());
+            System.out.println();
+
+        });
+        System.out.println("-------------------------------------------------------------------------------\n");
+
+    }
+
 
 }

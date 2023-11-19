@@ -8,9 +8,18 @@ public class Tarea {
     private String estado;
     private String prioridad;
     private Date fecha;
+    private String fechaString;
 
     public Tarea() {
 
+    }
+
+    public Tarea(String titulo, String descripcion, String estado, String prioridad, String fechaString) {
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.estado = estado;
+        this.prioridad = prioridad;
+        this.fechaString = fechaString;
     }
 
     public Tarea(String titulo, String descripcion, String estado, String prioridad, Date fecha) {
@@ -70,5 +79,13 @@ public class Tarea {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public String getFechaString() {
+        return fechaString;
+    }
+
+    public void setFechaString(String fechaString) {
+        this.fechaString = fechaString;
     }
 }

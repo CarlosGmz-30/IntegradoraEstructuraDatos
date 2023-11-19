@@ -5,14 +5,35 @@ import mx.edu.utez.Utils.MysqlConector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TareaDao implements DaoRepository {
 
     @Override
-    public List findall() {
-        return null;
+    public List<Tarea> findall() {
+        List<Tarea> tareaList = new ArrayList<>();
+        Connection connection = new MysqlConector().connect();
+        try {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM tarea;");
+            ResultSet res = stmt.executeQuery();
+            while (res.next()) {
+                Tarea tarea = new Tarea();
+                tarea.setTitulo(res.getString("titulo"));
+                tarea.setDescripcion(res.getString("descripcion"));
+                tarea.setPrioridad(res.getString("prioridad"));
+                tarea.setEstado(res.getString("estado"));
+                tarea.setFechaString(res.getString("fecha"));
+                tareaList.add(tarea);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return tareaList;
     }
 
     @Override
