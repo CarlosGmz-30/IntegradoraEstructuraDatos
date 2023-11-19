@@ -18,7 +18,7 @@ public class Main {
                 opc = menuPrincipal(sc);
                 switch (opc){
                     case 1:
-                        agregarTarea();
+                        if (agregarTarea()) System.out.println("\nTarea agregada con exito\n");
                         break;
                     case 2:
                         break;
@@ -32,15 +32,15 @@ public class Main {
                 }
 
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 System.out.println("CATCH!");
                 System.out.println(e);
             }
-        }while (opc!=5);
+        } while (opc != 5);
 
     }
 
-    public static int menuPrincipal(Scanner sc){
+    public static int menuPrincipal(Scanner sc) {
         System.out.println("""
                 1.- Agregar tarea.
                 2.- Tareas pendientes.
@@ -51,7 +51,7 @@ public class Main {
         return sc.nextInt();
     }
 
-    public static boolean agregarTarea(){
+    public static boolean agregarTarea() {
         TareaDao tareaDao = new TareaDao();
         Scanner sc = new Scanner(System.in);
         Tarea tarea = new Tarea();
@@ -60,12 +60,11 @@ public class Main {
         System.out.println("Descripcion:");
         tarea.setDescripcion(sc.nextLine());
         System.out.println("Prioridad:");
-        tarea.setPrioridad(sc.nextLine());
+        tarea.setPrioridad(sc.nextLine().toLowerCase());
         tarea.setEstado("pendiente");
         //sc.close();
         return tareaDao.create(tarea);
     }
-
 
 
 }
