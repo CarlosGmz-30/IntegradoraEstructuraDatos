@@ -23,6 +23,7 @@ public class TareaDao implements DaoRepository {
             ResultSet res = stmt.executeQuery();
             while (res.next()) {
                 Tarea tarea = new Tarea();
+                tarea.setId_tarea(res.getInt("id_tarea"));
                 tarea.setTitulo(res.getString("titulo"));
                 tarea.setDescripcion(res.getString("descripcion"));
                 tarea.setPrioridad(res.getString("prioridad"));
@@ -69,6 +70,14 @@ public class TareaDao implements DaoRepository {
 
     @Override
     public boolean delete(int id) {
+        Connection connection = new MysqlConector().connect();
+        try {
+            PreparedStatement stmt = connection.prepareStatement("DELETE FROM tarea WHERE id_tarea = ?");
+            stmt.setInt(1,id);
+
+        } catch (SQLException e){
+            throw new RuntimeException(e);
+        }
         return false;
     }
 

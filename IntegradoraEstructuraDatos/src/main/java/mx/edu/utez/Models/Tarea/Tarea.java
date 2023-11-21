@@ -3,6 +3,7 @@ package mx.edu.utez.Models.Tarea;
 import java.util.Date;
 
 public class Tarea {
+    private int id_tarea;
     private String titulo;
     private String descripcion;
     private String estado;
@@ -12,6 +13,16 @@ public class Tarea {
 
     public Tarea() {
 
+    }
+
+    public Tarea(int id_tarea, String titulo, String descripcion, String estado, String prioridad, Date fecha, String fechaString) {
+        this.id_tarea = id_tarea;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.estado = estado;
+        this.prioridad = prioridad;
+        this.fecha = fecha;
+        this.fechaString = fechaString;
     }
 
     public Tarea(String titulo, String descripcion, String estado, String prioridad, String fechaString) {
@@ -36,6 +47,14 @@ public class Tarea {
         this.estado = estado;
         this.prioridad = prioridad;
 
+    }
+
+    public int getId_tarea() {
+        return id_tarea;
+    }
+
+    public void setId_tarea(int id_tarea) {
+        this.id_tarea = id_tarea;
     }
 
     public String getTitulo() {
