@@ -50,7 +50,7 @@ public class Main {
                                 break;
                             case 2:
                                 mostrarLinkedListTareas(tareaLinkedList);
-                                //agregarTareaEnPosicionEspecifica(tareaLinkedList);
+                                agregarTareaEnPosicionEspecifica(tareaLinkedList);
                                 break;
                             case 3:
                                 break;
@@ -70,7 +70,7 @@ public class Main {
                                    // System.out.println("stack");
                                     mostrarStackTareas(stackTareas); // mostramos el stack
                                     //System.out.println("find all");
-                                   // mostrarTareasFindAll();
+                                   //   mostrarTareasFindAll();
                                     System.out.println("""
                                             1.- Marcar tarea como completada.
                                             2.- Regresar <--
@@ -163,7 +163,7 @@ public class Main {
                     tarea.getDescripcion(),
                     tarea.getPrioridad(),
                     tarea.getEstado(),
-                    tarea.getFechaString());
+                    tarea.getFecha());
             System.out.println();
             contador.getAndIncrement(); // esta wea es para aumentar el contador en 1(no sabia que en una lambda no era tan facil)
         });
