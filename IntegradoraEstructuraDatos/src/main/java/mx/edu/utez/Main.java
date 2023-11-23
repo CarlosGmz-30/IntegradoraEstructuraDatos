@@ -4,6 +4,7 @@ import mx.edu.utez.Models.Tarea.Tarea;
 import mx.edu.utez.Models.Tarea.TareaDao;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -12,13 +13,14 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         LinkedList<Tarea> tareaLinkedList = new LinkedList<>();
         Stack<Tarea> stackTareas = new Stack<>();
+        Queue<Tarea> queueTareas = new ArrayDeque<>();
         int opc = 0;
 
 
 
         do {
             if (!tareaLinkedList.isEmpty()) {
-                mostrarLinkedListTareas(tareaLinkedList);
+                //mostrarLinkedListTareas(tareaLinkedList);
                 //mostrarTareasFindAll();
             }
             try {
@@ -93,7 +95,25 @@ public class Main {
                         } while (opcTareasPendientes != 2);
 
                         break;
-                    case 3: // TODO: 11/19/2023 Tareas programadas 
+                    case 3: // TODO: 11/19/2023 Tareas programadas
+                        TareaDao daoTareaQ = new TareaDao();
+                        List<Tarea> tareaListQ = daoTareaQ.findall();
+                        Date fechaActual = new Date();
+                        //System.out.println(fechaActual);
+                        String fechaQ = fechaActual.toString();
+                        //System.out.println(fechaQ);
+                        String[] fechaArrayQ = fechaQ.split(" ");
+                        String fechaComp = fechaArrayQ[1] + " " + fechaArrayQ[2] + " " + fechaArrayQ[5];
+                        //System.out.println(fechaComp);
+                        for (Tarea tarea : tareaListQ) {
+                            if (tarea.getFechaString() != null && fechaComp.equals(tarea.getFechaString())) {
+                                tarea.setEstado("programada");
+                                queueTareas.add(tarea);
+                            }
+                        }
+                        for (Tarea tarea : queueTareas) {
+                            System.out.println(tarea);
+                        }
                         break;
                     case 4: // TODO: 11/19/2023 Lista de prioridades 
                         break;

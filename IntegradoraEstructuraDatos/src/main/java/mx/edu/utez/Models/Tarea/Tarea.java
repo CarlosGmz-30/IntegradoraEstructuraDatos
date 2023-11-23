@@ -107,4 +107,17 @@ public class Tarea {
     public void setFechaString(String fechaString) {
         this.fechaString = fechaString;
     }
+
+    @Override
+    public String toString() {
+        return "Tarea{" +
+                "id_tarea=" + id_tarea +
+                ", titulo='" + titulo + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", estado='" + estado + '\'' +
+                ", prioridad='" + prioridad + '\'' +
+                ", fecha=" + fecha +
+                ", fechaString='" + fechaString + '\'' +
+                '}';
+    }
 }
