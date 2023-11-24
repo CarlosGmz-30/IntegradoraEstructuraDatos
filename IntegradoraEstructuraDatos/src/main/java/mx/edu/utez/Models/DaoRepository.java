@@ -12,5 +12,5 @@ public interface DaoRepository<T> {
     boolean create(Tarea tarea);
 
     boolean delete(int id);
-    boolean update(T object, int id);
+    boolean update(int id);
 }

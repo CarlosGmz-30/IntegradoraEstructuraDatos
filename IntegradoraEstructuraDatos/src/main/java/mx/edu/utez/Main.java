@@ -16,8 +16,6 @@ public class Main {
         Queue<Tarea> queueTareas = new ArrayDeque<>();
         int opc = 0;
 
-
-
         do {
             if (!tareaLinkedList.isEmpty()) {
                 //mostrarLinkedListTareas(tareaLinkedList);
@@ -33,30 +31,14 @@ public class Main {
                             //System.out.println("findAll");
                             //mostrarTareasFindAll();
                         }
-                        System.out.println("""
-                                1.- Agregar al final de la lista.
-                                2.- Agregar en una posicion especifica.
-                                3.- Regresar <--
-                                """);
-                        System.out.print("Opcion: ");
-                        int opcCase1 = sc.nextInt();
-                        switch (opcCase1) {
-                            case 1:
-                                Tarea tareaNueva = agregarTarea();
-                                if (tareaNueva != null) {
-                                    tareaLinkedList.add(tareaNueva);
-                                    System.out.println("\nTarea agregada con exito\n");
-                                } else {
-                                    System.out.println("\n**Error al agregar tarea**\n");
-                                }
-                                break;
-                            case 2:
-                                mostrarLinkedListTareas(tareaLinkedList);
-                                agregarTareaEnPosicionEspecifica(tareaLinkedList);
-                                break;
-                            case 3:
-                                break;
+                        Tarea tareaNueva = agregarTarea();
+                        if (tareaNueva != null) {
+                            tareaLinkedList.add(tareaNueva);
+                            System.out.println("\nTarea agregada con exito\n");
+                        } else {
+                            System.out.println("\n**Error al agregar tarea**\n");
                         }
+
                         break;
                     case 2: // TODO: 11/19/2023 Tareas pendientes
                         TareaDao daoTarea = new TareaDao();
@@ -69,10 +51,10 @@ public class Main {
                         do {
                             try {
                                 if (!stackTareas.isEmpty()) {
-                                   // System.out.println("stack");
+                                    // System.out.println("stack");
                                     mostrarStackTareas(stackTareas); // mostramos el stack
                                     //System.out.println("find all");
-                                   //   mostrarTareasFindAll();
+                                    //   mostrarTareasFindAll();
                                     System.out.println("""
                                             1.- Marcar tarea como completada.
                                             2.- Regresar <--
@@ -81,13 +63,15 @@ public class Main {
                                     opcTareasPendientes = sc.nextInt();
                                     switch (opcTareasPendientes) {
                                         case 1: // eliminar sacar del stack (y eleminar de la base de datos)
-                                            daoTarea.delete(stackTareas.pop().getId_tarea());
+                                            int idTarea = stackTareas.pop().getId_tarea();
+                                            daoTarea.delete(idTarea);
                                             break;
                                         case 2: // regresar
                                             break;
                                     }
                                 } else {
                                     System.out.println("Sin tareas pendientes");
+                                    if (stackTareas.isEmpty()) break;
                                 }
                             } catch (Exception e) {
                                 System.out.println(e);
@@ -107,13 +91,13 @@ public class Main {
                         //System.out.println(fechaComp);
                         for (Tarea tarea : tareaListQ) {
                             if (tarea.getFechaString() != null && fechaComp.equals(tarea.getFechaString())) {
+                                // Modificar el estado en la base de datos de pendiente a programada
                                 tarea.setEstado("programada");
+                                daoTareaQ.update(tarea.getId_tarea());
                                 queueTareas.add(tarea);
                             }
                         }
-                        for (Tarea tarea : queueTareas) {
-                            System.out.println(tarea);
-                        }
+                        mostrarQueue(queueTareas);
                         break;
                     case 4: // TODO: 11/19/2023 Lista de prioridades 
                         break;
@@ -212,30 +196,6 @@ public class Main {
         System.out.println("-----------------------------------------------------------------------------------\n");
     }
 
-    public static void agregarTareaEnPosicionEspecifica(LinkedList<Tarea> tareasLinkedList) {
-        Scanner sc = new Scanner(System.in);
-        Tarea tareaNuevaCase2 = agregarTarea();
-        //mostrarTareasFindAll();
-        //mostrarTareas(tareaLinkedList);
-        boolean continuar = false;
-        if (tareaNuevaCase2 != null) {
-            do {
-                System.out.println("Ingresa la posicion en la que quieres agregar la tarea");
-                int index = sc.nextInt();
-                try {
-                    tareasLinkedList.add(index - 1, tareaNuevaCase2);
-                    continuar = false;
-                } catch (Exception e) {
-                    System.out.println("Esa posicion no existe, elige otra");
-                    continuar = true;
-                }
-            } while (continuar);
-            System.out.println("\nTarea agregada con exito\n");
-        } else {
-            System.out.println("\n**Error al agregar tarea**\n");
-        }
-    }
-
     public static void mostrarStackTareas(Stack<Tarea> stackTareas) {
         if (!stackTareas.isEmpty()) {
             AtomicInteger contador = new AtomicInteger(1); // para poder hacer el incremento
@@ -258,6 +218,26 @@ public class Main {
         } else {
             System.out.println("El stack de tareas esta vacio");
         }
+    }
+
+    public static void mostrarQueue(Queue<Tarea> queueTareas) {
+        AtomicInteger contador = new AtomicInteger(1); // para poder hacer el incremento
+        System.out.println("-----------------------------------------------------------------------------------");
+        System.out.printf("%-4s %-16s %-25s %-10s %-12s %-12s", "No.", "TITULO", "DESCRIPCION", "PRIORIDAD", "ESTADO", "FECHA");
+        System.out.println();
+        System.out.println("-----------------------------------------------------------------------------------");
+        queueTareas.forEach(tarea -> {
+            System.out.printf("%-4s %-16s %-25s %-10s %-12s %-12s",
+                    contador,
+                    tarea.getTitulo(),
+                    tarea.getDescripcion(),
+                    tarea.getPrioridad(),
+                    tarea.getEstado(),
+                    tarea.getFechaString());
+            System.out.println();
+            contador.getAndIncrement(); // esta wea es para aumentar el contador en 1(no sabia que en una lambda no era tan facil)
+        });
+        System.out.println("-----------------------------------------------------------------------------------\n");
     }
 
 

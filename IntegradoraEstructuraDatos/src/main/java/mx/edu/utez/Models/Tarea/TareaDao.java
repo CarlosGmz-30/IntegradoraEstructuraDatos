@@ -73,17 +73,23 @@ public class TareaDao implements DaoRepository {
         Connection connection = new MysqlConector().connect();
         try {
             PreparedStatement stmt = connection.prepareStatement("DELETE FROM tarea WHERE id_tarea = ?");
-            stmt.setInt(1,id);
-
-        } catch (SQLException e){
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return false;
     }
 
     @Override
-    public boolean update(Object object, int id) {
-        return false;
+    public boolean update(int id) {
+        Connection connection = new MysqlConector().connect();
+        try {
+            PreparedStatement stmt = connection.prepareStatement("UPDATE tarea SET estado = 'programada' WHERE id_tarea = ?");
+            stmt.setInt(1, id);
+            return stmt.executeUpdate() == 1;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
