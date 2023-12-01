@@ -35,7 +35,9 @@ public class Main {
                             System.out.println("\n**Error al agregar tarea**\n");
                         }
                         break;
-                    case 3: // TODO: 11/19/2023 Tareas pendientes
+                    case 3: // TODO: 12/01/2023 Agregar varias tareas
+                        break;
+                    case 4: // TODO: 11/19/2023 Tareas pendientes
                         TareaDao daoTarea = new TareaDao();
                         List<Tarea> tareaList = daoTarea.findall(); // obtenemos la lista de tareas de la base de datos
                         for (Tarea tarea : tareaList) { // llenamos el stack de tareas con la lista obtenida de la base de datos
@@ -74,7 +76,7 @@ public class Main {
                         } while (opcTareasPendientes != 2);
 
                         break;
-                    case 4: // TODO: 11/19/2023 Tareas programadas
+                    case 5: // TODO: 11/19/2023 Tareas programadas
                         TareaDao daoTareaQ = new TareaDao();
                         List<Tarea> tareaListQ = daoTareaQ.findall();
                         Date fechaActual = new Date();
@@ -94,9 +96,9 @@ public class Main {
                         }
                         mostrarQueue(queueTareas);
                         break;
-                    case 5: // TODO: 11/19/2023 Lista de prioridades
+                    case 6: // TODO: 11/19/2023 Lista de prioridades
                         break;
-                    case 6:
+                    case 7:
                         System.out.println("camara!");
                         break;
                 }
@@ -104,7 +106,7 @@ public class Main {
                 System.out.println("CATCH!");
                 System.out.println(e);
             }
-        } while (opc != 5);
+        } while (opc != 7);
     }
 
     public static int menuPrincipal(Scanner sc) {
@@ -112,10 +114,11 @@ public class Main {
         System.out.println("""
                 1.- Mostrar tareas.
                 2.- Agregar tarea.
-                3.- Tareas pendientes.
-                4.- Tareas programadas.
-                5.- Lista de prioridades.
-                6.- Salir.
+                3.- Agregar varias tareas.
+                4.- Tareas pendientes.
+                5.- Tareas programadas.
+                6.- Lista de prioridades.
+                7.- Salir.
                 """);
         System.out.print("Opcion: ");
         return sc.nextInt();
