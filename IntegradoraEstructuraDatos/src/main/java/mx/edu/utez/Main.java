@@ -17,19 +17,15 @@ public class Main {
         int opc = 0;
 
         do {
-            if (!tareaLinkedList.isEmpty()) {
-                //mostrarLinkedListTareas(tareaLinkedList);
-                //mostrarTareasFindAll();
-            }
             try {
                 opc = menuPrincipal(sc);
                 switch (opc) {
                     case 1:
+                        mostrarTareasFindAll();
+                        break;
+                    case 2:
                         if (!tareaLinkedList.isEmpty()) {
-                            //System.out.println("linked list");
-                            mostrarLinkedListTareas(tareaLinkedList);
-                            //System.out.println("findAll");
-                            //mostrarTareasFindAll();
+                            mostrarTareasFindAll();
                         }
                         Tarea tareaNueva = agregarTarea();
                         if (tareaNueva != null) {
@@ -38,9 +34,8 @@ public class Main {
                         } else {
                             System.out.println("\n**Error al agregar tarea**\n");
                         }
-
                         break;
-                    case 2: // TODO: 11/19/2023 Tareas pendientes
+                    case 3: // TODO: 11/19/2023 Tareas pendientes
                         TareaDao daoTarea = new TareaDao();
                         List<Tarea> tareaList = daoTarea.findall(); // obtenemos la lista de tareas de la base de datos
                         for (Tarea tarea : tareaList) { // llenamos el stack de tareas con la lista obtenida de la base de datos
@@ -79,7 +74,7 @@ public class Main {
                         } while (opcTareasPendientes != 2);
 
                         break;
-                    case 3: // TODO: 11/19/2023 Tareas programadas
+                    case 4: // TODO: 11/19/2023 Tareas programadas
                         TareaDao daoTareaQ = new TareaDao();
                         List<Tarea> tareaListQ = daoTareaQ.findall();
                         Date fechaActual = new Date();
@@ -99,9 +94,9 @@ public class Main {
                         }
                         mostrarQueue(queueTareas);
                         break;
-                    case 4: // TODO: 11/19/2023 Lista de prioridades 
+                    case 5: // TODO: 11/19/2023 Lista de prioridades
                         break;
-                    case 5:
+                    case 6:
                         System.out.println("camara!");
                         break;
                 }
@@ -115,11 +110,12 @@ public class Main {
     public static int menuPrincipal(Scanner sc) {
         System.out.println();
         System.out.println("""
-                1.- Agregar tarea.
-                2.- Tareas pendientes.
-                3.- Tareas programadas.
-                4.- Lista de prioridades.
-                5.- Salir.
+                1.- Mostrar tareas.
+                2.- Agregar tarea.
+                3.- Tareas pendientes.
+                4.- Tareas programadas.
+                5.- Lista de prioridades.
+                6.- Salir.
                 """);
         System.out.print("Opcion: ");
         return sc.nextInt();
@@ -152,26 +148,6 @@ public class Main {
         } else {
             return null;
         }
-    }
-
-    public static void mostrarLinkedListTareas(LinkedList<Tarea> tareasLinkedList) {
-        AtomicInteger contador = new AtomicInteger(1); // para poder hacer el incremento
-        System.out.println("-----------------------------------------------------------------------------------");
-        System.out.printf("%-4s %-16s %-25s %-10s %-12s %-12s", "No.", "TITULO", "DESCRIPCION", "PRIORIDAD", "ESTADO", "FECHA");
-        System.out.println();
-        System.out.println("-----------------------------------------------------------------------------------");
-        tareasLinkedList.forEach(tarea -> {
-            System.out.printf("%-4s %-16s %-25s %-10s %-12s %-12s",
-                    contador,
-                    tarea.getTitulo(),
-                    tarea.getDescripcion(),
-                    tarea.getPrioridad(),
-                    tarea.getEstado(),
-                    tarea.getFecha());
-            System.out.println();
-            contador.getAndIncrement(); // esta wea es para aumentar el contador en 1(no sabia que en una lambda no era tan facil)
-        });
-        System.out.println("-----------------------------------------------------------------------------------\n");
     }
 
     public static void mostrarTareasFindAll() {
