@@ -36,6 +36,11 @@ public class Main {
                         }
                         break;
                     case 3: // TODO: 12/01/2023 Agregar varias tareas
+                        Stack<Tarea> variasTareas = agregarVariasTareas();
+                        if(variasTareas != null){
+                            TareaDao tareaDao = new TareaDao();
+                            tareaDao.insertAll(variasTareas);
+                        }
                         break;
                     case 4: // TODO: 11/19/2023 Tareas pendientes
                         TareaDao daoTarea = new TareaDao();
@@ -48,10 +53,7 @@ public class Main {
                         do {
                             try {
                                 if (!stackTareas.isEmpty()) {
-                                    // System.out.println("stack");
-                                    mostrarStackTareas(stackTareas); // mostramos el stack
-                                    //System.out.println("find all");
-                                    //   mostrarTareasFindAll();
+                                    mostrarTareasFindAll();
                                     System.out.println("""
                                             1.- Marcar tarea como completada.
                                             2.- Regresar <--
@@ -71,7 +73,8 @@ public class Main {
                                     if (stackTareas.isEmpty()) break;
                                 }
                             } catch (Exception e) {
-                                System.out.println(e);
+                                System.out.println(e.getMessage());
+                                break;
                             }
                         } while (opcTareasPendientes != 2);
 
@@ -104,7 +107,7 @@ public class Main {
                 }
             } catch (Exception e) {
                 System.out.println("CATCH!");
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
         } while (opc != 7);
     }
@@ -168,6 +171,7 @@ public class Main {
                     tarea.getDescripcion(),
                     tarea.getPrioridad(),
                     tarea.getEstado(),
+                    //tarea.getFecha());
                     tarea.getFechaString());
             System.out.println();
             contador.getAndIncrement(); // esta wea es para aumentar el contador en 1(no sabia que en una lambda no era tan facil)
@@ -189,7 +193,8 @@ public class Main {
                         tarea.getDescripcion(),
                         tarea.getPrioridad(),
                         tarea.getEstado(),
-                        tarea.getFechaString());
+                        tarea.getFecha());
+                        //tarea.getFechaString());
                 System.out.println();
                 contador.getAndIncrement(); // esta wea es para aumentar el contador en 1(no sabia que en una lambda no era tan facil)
             });
@@ -218,6 +223,68 @@ public class Main {
         });
         System.out.println("-----------------------------------------------------------------------------------\n");
     }
+
+
+    public static Stack<Tarea> agregarVariasTareas() {
+        Stack<Tarea> variasTareas = new Stack<>();
+        Scanner sc = new Scanner(System.in);
+        int opc = 0;
+        do {
+            try {
+                if (!variasTareas.isEmpty()) {
+                    System.out.println("Tareas agregadas");
+                    mostrarStackTareas(variasTareas);
+                }
+                System.out.println("""
+                        1.- Agregar tarea.
+                        2.- Finalizar agregacion.
+                        3.- Regresar <--
+                        """);
+                opc = sc.nextInt();
+                switch (opc) {
+                    case 1:
+                        sc.nextLine();
+                        Tarea tarea = new Tarea();
+                        System.out.println("Titulo:");
+                        tarea.setTitulo(sc.nextLine());
+                        System.out.println("Descripcion:");
+                        tarea.setDescripcion(sc.nextLine());
+                        System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
+                        String fechaString = sc.nextLine();
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            Date fecha = dateFormat.parse(fechaString);
+                            tarea.setFecha(fecha);
+                        } catch (Exception e) {
+                            System.out.println("Error al convertir la fecha");
+                        }
+
+                        System.out.println("Prioridad:");
+                        tarea.setPrioridad(sc.nextLine().toLowerCase());
+                        tarea.setEstado("pendiente");
+                        variasTareas.push(tarea);
+                        break;
+                    case 2, 3:
+                        //sc.nextLine();
+                        return variasTareas;
+
+                }
+
+            } catch (Exception e) {
+                System.out.println("\n    ! OPCION NO VALIDA !\n");
+                break;
+               // opc = 3;
+            }
+
+        } while (opc != 3);
+
+        return null;
+    }
+
+    /*
+
+     */
 
 
 }

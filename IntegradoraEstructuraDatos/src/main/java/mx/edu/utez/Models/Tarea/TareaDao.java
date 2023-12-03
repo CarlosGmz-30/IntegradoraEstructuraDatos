@@ -7,10 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Stack;
 
 public class TareaDao implements DaoRepository {
 
@@ -51,9 +50,7 @@ public class TareaDao implements DaoRepository {
     public boolean create(Tarea tarea) {
         Connection connection = new MysqlConector().connect();
         try {
-            //PreparedStatement stmt = connection.prepareStatement(" call agregar_tarea('Investigacion','Investigacion sobre JWT','media','pendiente')");
             PreparedStatement stmt = connection.prepareStatement(" call agregar_tarea(?,?,?,?,?);");
-
             stmt.setString(1, tarea.getTitulo());
             stmt.setString(2, tarea.getDescripcion());
             stmt.setString(3, tarea.getFecha());
@@ -61,9 +58,25 @@ public class TareaDao implements DaoRepository {
             stmt.setString(5, tarea.getEstado());
             return stmt.executeUpdate() == 1;
 
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public void insertAll(Stack<Tarea> variasTareas) {
+        Connection connection = new MysqlConector().connect();
+        for (Tarea tarea : variasTareas) {
+            try {
+                PreparedStatement stmt = connection.prepareStatement(" call agregar_tarea(?,?,?,?,?);");
+                stmt.setString(1, tarea.getTitulo());
+                stmt.setString(2, tarea.getDescripcion());
+                stmt.setString(3, tarea.getFecha());
+                stmt.setString(4, tarea.getPrioridad());
+                stmt.setString(5, tarea.getEstado());
+                stmt.executeUpdate();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -92,19 +105,3 @@ public class TareaDao implements DaoRepository {
         }
     }
 }
-
-/*
-public boolean create(Usuario usr) {
-        Connection con = new MysqlConector().connect();
-        try {
-            PreparedStatement stmt = con.prepareStatement("CALL REGISTRAR_USUARIO(?,?,?,?);");
-            stmt.setString(1, usr.getCorreoUsuario());
-            stmt.setString(2, usr.getNombreUsuario());
-            stmt.setString(3, usr.getApellidoUsuario());
-            stmt.setString(4, usr.getContrasenaUsuario());
-            return stmt.executeUpdate() == 1;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
- */
