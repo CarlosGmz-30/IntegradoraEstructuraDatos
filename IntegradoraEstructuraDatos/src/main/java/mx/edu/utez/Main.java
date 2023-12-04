@@ -91,7 +91,6 @@ public class Main {
                         //System.out.println(fechaComp);
                         for (Tarea tarea : tareaListQ) {
                             if (tarea.getFechaString() != null && fechaComp.equals(tarea.getFechaString())) {
-                                // Modificar el estado en la base de datos de pendiente a programada
                                 tarea.setEstado("programada");
                                 daoTareaQ.update(tarea.getId_tarea());
                                 queueTareas.add(tarea);
@@ -100,6 +99,13 @@ public class Main {
                         mostrarQueue(queueTareas);
                         break;
                     case 6: // TODO: 11/19/2023 Lista de prioridades
+                        TareaDao daoTareaT = new TareaDao();
+                        List<Tarea> tareaListT = daoTareaT.findall();
+                        TreeSet<Tarea> tareaTreeSet = new TreeSet<>();
+                        for (Tarea tarea : tareaListT) {
+                            tareaTreeSet.add(tarea);
+                        }
+                        mostrarTree(tareaTreeSet);
                         break;
                     case 7:
                         System.out.println("camara!");
@@ -194,7 +200,7 @@ public class Main {
                         tarea.getPrioridad(),
                         tarea.getEstado(),
                         tarea.getFecha());
-                        //tarea.getFechaString());
+                //tarea.getFechaString());
                 System.out.println();
                 contador.getAndIncrement(); // esta wea es para aumentar el contador en 1(no sabia que en una lambda no era tan facil)
             });
@@ -224,6 +230,25 @@ public class Main {
         System.out.println("-----------------------------------------------------------------------------------\n");
     }
 
+    public static void mostrarTree(TreeSet<Tarea> treeTareas) {
+        AtomicInteger contador = new AtomicInteger(1); // para poder hacer el incremento
+        System.out.println("-----------------------------------------------------------------------------------");
+        System.out.printf("%-4s %-16s %-25s %-10s %-12s %-12s", "No.", "TITULO", "DESCRIPCION", "PRIORIDAD", "ESTADO", "FECHA");
+        System.out.println();
+        System.out.println("-----------------------------------------------------------------------------------");
+        treeTareas.forEach(tarea -> {
+            System.out.printf("%-4s %-16s %-25s %-10s %-12s %-12s",
+                    contador,
+                    tarea.getTitulo(),
+                    tarea.getDescripcion(),
+                    tarea.getPrioridad(),
+                    tarea.getEstado(),
+                    tarea.getFechaString());
+            System.out.println();
+            contador.getAndIncrement(); // esta wea es para aumentar el contador en 1(no sabia que en una lambda no era tan facil)
+        });
+        System.out.println("-----------------------------------------------------------------------------------\n");
+    }
 
     public static Stack<Tarea> agregarVariasTareas() {
         Stack<Tarea> variasTareas = new Stack<>();
@@ -274,7 +299,7 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("\n    ! OPCION NO VALIDA !\n");
                 break;
-               // opc = 3;
+                // opc = 3;
             }
 
         } while (opc != 3);

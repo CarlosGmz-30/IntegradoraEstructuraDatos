@@ -1,8 +1,13 @@
 package mx.edu.utez.Models.Tarea;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
-public class Tarea {
+public class Tarea implements Comparable<Tarea>{
     private int id_tarea;
     private String titulo;
     private String descripcion;
@@ -118,6 +123,57 @@ public class Tarea {
                 ", prioridad='" + prioridad + '\'' +
                 ", fecha=" + fecha +
                 ", fechaString='" + fechaString + '\'' +
-                '}';
+                '}'+"\n";
+    }
+
+    @Override
+    public int compareTo(Tarea comparada) {
+        int priori = 0, priori2 = 0;
+        String prioridad = this.getPrioridad();
+        switch (prioridad){
+            case "alta":
+                priori = 3;
+                break;
+            case "media":
+                priori = 2;
+                break;
+            case "baja":
+                priori = 1;
+                break;
+            default:
+                System.out.println("");
+        }
+        String prioridad2 = comparada.getPrioridad();
+        switch (prioridad2){
+            case "alta":
+                priori2 = 3;
+                break;
+            case "media":
+                priori2 = 2;
+                break;
+            case "baja":
+                priori2 = 1;
+                break;
+            default:
+                System.out.println("");
+        }
+        if (priori != priori2) {
+            return Integer.compare(priori2, priori);
+        } else {
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM dd yyyy", Locale.ENGLISH);
+            Date fecha1;
+            Date fecha2;
+            try {
+                fecha1 = sdf.parse(this.getFechaString());
+                fecha2 = sdf.parse(comparada.getFechaString());
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+            int comparacionFecha = fecha1.compareTo(fecha2);
+            if (comparacionFecha != 0) {
+                return comparacionFecha;
+            }
+            return 0;
+        }
     }
 }
