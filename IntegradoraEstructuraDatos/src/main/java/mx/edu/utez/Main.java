@@ -4,7 +4,6 @@ import mx.edu.utez.Models.Tarea.Tarea;
 import mx.edu.utez.Models.Tarea.TareaDao;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -37,7 +36,7 @@ public class Main {
                         break;
                     case 3: // TODO: 12/01/2023 Agregar varias tareas
                         Stack<Tarea> variasTareas = agregarVariasTareas();
-                        if(variasTareas != null){
+                        if (variasTareas != null) {
                             TareaDao tareaDao = new TareaDao();
                             tareaDao.insertAll(variasTareas);
                         }
@@ -253,7 +252,7 @@ public class Main {
     public static Stack<Tarea> agregarVariasTareas() {
         Stack<Tarea> variasTareas = new Stack<>();
         Scanner sc = new Scanner(System.in);
-        int opc = 0;
+        int opc;
         do {
             try {
                 if (!variasTareas.isEmpty()) {
@@ -299,17 +298,12 @@ public class Main {
             } catch (Exception e) {
                 System.out.println("\n    ! OPCION NO VALIDA !\n");
                 break;
-                // opc = 3;
             }
 
         } while (opc != 3);
 
         return null;
     }
-
-    /*
-
-     */
 
 
 }

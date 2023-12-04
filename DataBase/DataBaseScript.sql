@@ -29,7 +29,5 @@ END
 $$
 DELIMITER ;
 
-call agregar_tarea('Investigacion', 'Investigacion sobre JWT', '17 de Junio', 'media', 'pendiente');
 
-select *
-from tarea;
+select * from tarea;
