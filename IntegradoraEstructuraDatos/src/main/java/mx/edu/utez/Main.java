@@ -148,16 +148,24 @@ public class Main {
         tarea.setTitulo(sc.nextLine());
         System.out.println("Descripcion:");
         tarea.setDescripcion(sc.nextLine());
-        System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
-        String fechaString = sc.nextLine();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        try {
-            Date fecha = dateFormat.parse(fechaString);
-            tarea.setFecha(fecha);
-        } catch (Exception e) {
-            System.out.println("Error al convertir la fecha");
-        }
+        boolean ciclarObtencionDeFecha = false;
+        do {
+            ciclarObtencionDeFecha = false;
+            System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
+            String fechaString = sc.nextLine();
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                Date fecha = dateFormat.parse(fechaString);
+                tarea.setFecha(fecha);
+            } catch (Exception e) {
+                ciclarObtencionDeFecha = true;
+                System.out.println("Error al convertir la fecha");
+            }
+
+        }while (ciclarObtencionDeFecha);
+
 
         System.out.println("Prioridad:");
         tarea.setPrioridad(sc.nextLine().toLowerCase());
