@@ -315,17 +315,46 @@ public class Main {
                         tarea.setTitulo(sc.nextLine());
                         System.out.println("Descripcion:");
                         tarea.setDescripcion(sc.nextLine());
-                        System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
-                        String fechaString = sc.nextLine();
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                        try {
-                            Date fecha = dateFormat.parse(fechaString);
-                            tarea.setFecha(fecha);
-                        } catch (Exception e) {
-                            System.out.println("Error al convertir la fecha");
-                        }
-                        System.out.println("Prioridad:");
-                        tarea.setPrioridad(sc.nextLine().toLowerCase());
+                        boolean ciclarObtencionDeFecha;
+                        do {
+                            ciclarObtencionDeFecha = false;
+                            System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
+                            String fechaString = sc.nextLine();
+
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            try {
+                                Date fecha = dateFormat.parse(fechaString);
+                                tarea.setFecha(fecha);
+                            } catch (Exception e) {
+                                ciclarObtencionDeFecha = true;
+                                System.out.println("\nError al convertir la fecha utiliza el formato dd/MM/yyyy\n");
+                            }
+
+                        } while (ciclarObtencionDeFecha);
+                        boolean ciclarObtencionDePrioridad;
+                        do {
+                            ciclarObtencionDePrioridad = false;
+                            System.out.println("Prioridad: (alta, media o baja)");
+                            String prioridad = sc.nextLine().toLowerCase();
+                            if(
+                                    prioridad.equals("baja")
+                                            || prioridad.equals("media")
+                                            || prioridad.equals("alta")
+                            ){
+                                tarea.setPrioridad(prioridad);
+                            } else {
+                                System.out.println("""
+                        
+                        Epa!
+                        Las opciones de prioridad son: alta, media o baja
+                        Intenta de nuevo...
+                        
+                        """);
+                                ciclarObtencionDePrioridad = true;
+                            }
+
+
+                        } while (ciclarObtencionDePrioridad);
                         tarea.setEstado("pendiente");
                         variasTareas.push(tarea);
                         break;
@@ -338,7 +367,6 @@ public class Main {
             } catch (InputMismatchException e) {
                 System.out.println("\n    ! OPCION NO VALIDA !\n");
             }
-            sc.nextLine();
         } while (opc != 3);
         return null;
     }
