@@ -149,7 +149,7 @@ public class Main {
         System.out.println("Descripcion:");
         tarea.setDescripcion(sc.nextLine());
 
-        boolean ciclarObtencionDeFecha = false;
+        boolean ciclarObtencionDeFecha;
         do {
             ciclarObtencionDeFecha = false;
             System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
@@ -161,14 +161,36 @@ public class Main {
                 tarea.setFecha(fecha);
             } catch (Exception e) {
                 ciclarObtencionDeFecha = true;
-                System.out.println("Error al convertir la fecha");
+                System.out.println("\nError al convertir la fecha utiliza el formato dd/MM/yyyy\n");
             }
 
-        }while (ciclarObtencionDeFecha);
+        } while (ciclarObtencionDeFecha);
+
+        boolean ciclarObtencionDePrioridad;
+        do {
+            ciclarObtencionDePrioridad = false;
+            System.out.println("Prioridad: (alta, media o baja)");
+            String prioridad = sc.nextLine().toLowerCase();
+            if(
+                    prioridad.equals("baja")
+                    || prioridad.equals("media")
+                    || prioridad.equals("alta")
+            ){
+                tarea.setPrioridad(prioridad);
+            } else {
+                System.out.println("""
+                        
+                        Epa!
+                        Las opciones de prioridad son: alta, media o baja
+                        Intenta de nuevo...
+                        
+                        """);
+                ciclarObtencionDePrioridad = true;
+            }
 
 
-        System.out.println("Prioridad:");
-        tarea.setPrioridad(sc.nextLine().toLowerCase());
+        } while (ciclarObtencionDePrioridad);
+
         tarea.setEstado("pendiente");
         if (tareaDao.create(tarea)) {
             return tarea;
