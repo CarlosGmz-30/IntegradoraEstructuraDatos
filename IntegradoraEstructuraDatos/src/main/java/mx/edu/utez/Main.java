@@ -49,7 +49,6 @@ public class Main {
                             stackTareas.push(tarea);
                         }
                         int opcTareasPendientes = 0;
-
                         do {
                             try {
                                 if (!stackTareas.isEmpty()) {
@@ -60,6 +59,7 @@ public class Main {
                                             """);
                                     System.out.print("Opcion: ");
                                     opcTareasPendientes = sc.nextInt();
+
                                     switch (opcTareasPendientes) {
                                         case 1: // eliminar sacar del stack (y eleminar de la base de datos)
                                             int idTarea = stackTareas.pop().getId_tarea();
@@ -72,8 +72,9 @@ public class Main {
                                     System.out.println("Sin tareas pendientes");
                                     if (stackTareas.isEmpty()) break;
                                 }
-                            } catch (Exception e) {
-                                System.out.println(e.getMessage());
+                            } catch (InputMismatchException e) {
+                                sc.nextLine();
+                                //System.out.println(e.getMessage());
                                 break;
                             }
                         } while (opcTareasPendientes != 2);
@@ -109,8 +110,9 @@ public class Main {
                         break;
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
-                System.out.println("CATCH! MENU PRINCIPAL");
+                //System.out.println(e.getMessage());
+                //System.out.println("CATCH! MENU PRINCIPAL");
+                System.out.println("\nOPCION NO VALIDA");
 
             }
         } while (opc != 7);
