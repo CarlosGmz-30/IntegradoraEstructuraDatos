@@ -2,8 +2,6 @@ package mx.edu.utez.Models.Tarea;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
 
@@ -20,39 +18,6 @@ public class Tarea implements Comparable<Tarea>{
 
     }
 
-    public Tarea(int id_tarea, String titulo, String descripcion, String estado, String prioridad, Date fecha, String fechaString) {
-        this.id_tarea = id_tarea;
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.estado = estado;
-        this.prioridad = prioridad;
-        this.fecha = fecha;
-        this.fechaString = fechaString;
-    }
-
-    public Tarea(String titulo, String descripcion, String estado, String prioridad, String fechaString) {
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.estado = estado;
-        this.prioridad = prioridad;
-        this.fechaString = fechaString;
-    }
-
-    public Tarea(String titulo, String descripcion, String estado, String prioridad, Date fecha) {
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.estado = estado;
-        this.prioridad = prioridad;
-        this.fecha = fecha;
-    }
-
-    public Tarea(String titulo, String descripcion, String estado, String prioridad) {
-        this.titulo = titulo;
-        this.descripcion = descripcion;
-        this.estado = estado;
-        this.prioridad = prioridad;
-
-    }
 
     public int getId_tarea() {
         return id_tarea;
