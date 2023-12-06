@@ -3,6 +3,7 @@ package mx.edu.utez;
 import mx.edu.utez.Models.Tarea.Tarea;
 import mx.edu.utez.Models.Tarea.TareaDao;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -111,7 +112,6 @@ public class Main {
                 }
             } catch (Exception e) {
                 //System.out.println(e.getMessage());
-                //System.out.println("CATCH! MENU PRINCIPAL");
                 System.out.println("\nOPCION NO VALIDA");
 
             }
@@ -149,41 +149,47 @@ public class Main {
         System.out.println("Descripcion:");
         tarea.setDescripcion(sc.nextLine());
 
-        boolean ciclarObtencionDeFecha;
-        do {
-            ciclarObtencionDeFecha = false;
-            System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        dateFormat.setLenient(false);  // Esto activa como una especie de modo estricto para la fecha
+        boolean fechaValida = false;
+        Date fechaIngresada = null;
+        while (!fechaValida) {
+            System.out.println("Ingresa la fecha en formato dd/MM/yyyy: ");
             String fechaString = sc.nextLine();
-
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
             try {
-                Date fecha = dateFormat.parse(fechaString);
-                tarea.setFecha(fecha);
-            } catch (Exception e) {
-                ciclarObtencionDeFecha = true;
-                System.out.println("\nError al convertir la fecha utiliza el formato dd/MM/yyyy\n");
-            }
+                fechaIngresada = dateFormat.parse(fechaString);
 
-        } while (ciclarObtencionDeFecha);
+                Date fechaActual = new Date(); // Aqui se valida si la fecha es pasada
+                if (fechaIngresada.after(fechaActual)) {
+                    fechaValida = true;
+                } else {
+                    System.out.println("\nUps! No puedes colocar fechas pasadas. Intenta de nuevo.\n");
+                }
+
+            } catch (ParseException e) {
+                System.out.println("\nFormato de fecha incorrecto. Usa el formato dd/MM/yyyy\n");
+            }
+        }
+        tarea.setFecha(fechaIngresada);
 
         boolean ciclarObtencionDePrioridad;
         do {
             ciclarObtencionDePrioridad = false;
             System.out.println("Prioridad: (alta, media o baja)");
             String prioridad = sc.nextLine().toLowerCase();
-            if(
+            if (
                     prioridad.equals("baja")
-                    || prioridad.equals("media")
-                    || prioridad.equals("alta")
-            ){
+                            || prioridad.equals("media")
+                            || prioridad.equals("alta")
+            ) {
                 tarea.setPrioridad(prioridad);
             } else {
                 System.out.println("""
-                        
+                                                
                         Epa!
                         Las opciones de prioridad son: alta, media o baja
                         Intenta de nuevo...
-                        
+                                                
                         """);
                 ciclarObtencionDePrioridad = true;
             }
@@ -198,6 +204,7 @@ public class Main {
             return null;
         }
     }
+
 
     public static void mostrarTareasFindAll() {
         TareaDao tareaDao = new TareaDao();
@@ -297,7 +304,7 @@ public class Main {
         do {
             try {
                 if (!variasTareas.isEmpty()) {
-                    System.out.println("Tareas agregadas");
+                    System.out.println("TAREAS PARA AGREGAR");
                     mostrarStackTareas(variasTareas);
                 }
                 System.out.println("""
@@ -315,46 +322,53 @@ public class Main {
                         tarea.setTitulo(sc.nextLine());
                         System.out.println("Descripcion:");
                         tarea.setDescripcion(sc.nextLine());
-                        boolean ciclarObtencionDeFecha;
-                        do {
-                            ciclarObtencionDeFecha = false;
-                            System.out.println("Fecha de entrega (formato dd/MM/yyyy):");
+
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                        dateFormat.setLenient(false);  // Esto activa como una especie de modo estricto para la fecha
+                        boolean fechaValida = false;
+                        Date fechaIngresada = null;
+                        while (!fechaValida) {
+                            System.out.println("Ingresa la fecha en formato dd/MM/yyyy: ");
                             String fechaString = sc.nextLine();
-
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                             try {
-                                Date fecha = dateFormat.parse(fechaString);
-                                tarea.setFecha(fecha);
-                            } catch (Exception e) {
-                                ciclarObtencionDeFecha = true;
-                                System.out.println("\nError al convertir la fecha utiliza el formato dd/MM/yyyy\n");
+                                fechaIngresada = dateFormat.parse(fechaString);
+                                Date fechaActual = new Date(); // Aqui se valida si la fecha es pasada
+                                if (fechaIngresada.after(fechaActual)) {
+                                    fechaValida = true;
+                                } else {
+                                    System.out.println("\nUps! No puedes colocar fechas pasadas. Intenta de nuevo.\n");
+                                }
+                            } catch (ParseException e) {
+                                System.out.println("\nFormato de fecha incorrecto. Usa el formato dd/MM/yyyy\n");
                             }
+                        }
+                        tarea.setFecha(fechaIngresada);
 
-                        } while (ciclarObtencionDeFecha);
                         boolean ciclarObtencionDePrioridad;
                         do {
                             ciclarObtencionDePrioridad = false;
                             System.out.println("Prioridad: (alta, media o baja)");
                             String prioridad = sc.nextLine().toLowerCase();
-                            if(
+                            if (
                                     prioridad.equals("baja")
                                             || prioridad.equals("media")
                                             || prioridad.equals("alta")
-                            ){
+                            ) {
                                 tarea.setPrioridad(prioridad);
                             } else {
                                 System.out.println("""
-                        
-                        Epa!
-                        Las opciones de prioridad son: alta, media o baja
-                        Intenta de nuevo...
-                        
-                        """);
+                                                                
+                                        Epa!
+                                        Las opciones de prioridad son: alta, media o baja
+                                        Intenta de nuevo...
+                                                                
+                                        """);
                                 ciclarObtencionDePrioridad = true;
                             }
 
-
                         } while (ciclarObtencionDePrioridad);
+
+
                         tarea.setEstado("pendiente");
                         variasTareas.push(tarea);
                         break;
@@ -367,6 +381,7 @@ public class Main {
             } catch (InputMismatchException e) {
                 System.out.println("\n    ! OPCION NO VALIDA !\n");
             }
+            sc.nextLine();
         } while (opc != 3);
         return null;
     }
